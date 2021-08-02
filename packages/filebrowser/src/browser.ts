@@ -10,6 +10,7 @@ import {
   TranslationBundle
 } from '@jupyterlab/translation';
 import {
+  circleEmptyIcon,
   newFolderIcon,
   ReactWidget,
   refreshIcon,
@@ -84,6 +85,7 @@ export class FileBrowser extends Widget {
       this._trans.__('file browser')
     );
     this._directoryPending = false;
+    this._showHiddenFiles = true;
 
     const newFolder = new ToolbarButton({
       icon: newFolderIcon,
@@ -102,9 +104,19 @@ export class FileBrowser extends Widget {
       tooltip: this._trans.__('Refresh File List')
     });
 
+    const toggleHiddenFile = new ToolbarButton({
+      icon: circleEmptyIcon,
+      onClick: () => {
+        this._showHiddenFiles = !this._showHiddenFiles;
+        document.querySelectorAll<HTMLLIElement>("li[data-is-dot]").forEach(el => el.style.display = this._showHiddenFiles ? "flex" : "none");
+      },
+      tooltip: this._trans.__('Toggle hidden files visibility')
+    })
+
     this.toolbar.addItem('newFolder', newFolder);
     this.toolbar.addItem('upload', uploader);
     this.toolbar.addItem('refresher', refresher);
+    this.toolbar.addItem('toggleHiddenFile', toggleHiddenFile);
 
     this.listing = this.createDirListing({
       model,
@@ -414,6 +426,7 @@ export class FileBrowser extends Widget {
   private _navigateToCurrentDirectory: boolean;
   private _showLastModifiedColumn: boolean = true;
   private _useFuzzyFilter: boolean = true;
+  private _showHiddenFiles: boolean = true;
 }
 
 /**
