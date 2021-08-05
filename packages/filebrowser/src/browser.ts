@@ -2,6 +2,7 @@
 // Distributed under the terms of the Modified BSD License.
 
 import { showErrorMessage } from '@jupyterlab/apputils';
+import { PageConfig } from '@jupyterlab/coreutils';
 import { IDocumentManager } from '@jupyterlab/docmanager';
 import { Contents, ServerConnection } from '@jupyterlab/services';
 import {
@@ -108,15 +109,26 @@ export class FileBrowser extends Widget {
       icon: circleEmptyIcon,
       onClick: () => {
         this._showHiddenFiles = !this._showHiddenFiles;
-        document.querySelectorAll<HTMLLIElement>("li[data-is-dot]").forEach(el => el.style.display = this._showHiddenFiles ? "flex" : "none");
+        document
+          .querySelectorAll<HTMLLIElement>('li[data-is-dot]')
+          .forEach(
+            el => (el.style.display = this._showHiddenFiles ? 'flex' : 'none')
+          );
       },
       tooltip: this._trans.__('Toggle hidden files visibility')
-    })
+    });
 
     this.toolbar.addItem('newFolder', newFolder);
     this.toolbar.addItem('upload', uploader);
     this.toolbar.addItem('refresher', refresher);
-    this.toolbar.addItem('toggleHiddenFile', toggleHiddenFile);
+    if (PageConfig.getOption('allow_hidden_files') === 'true') {
+      document
+        .querySelectorAll<HTMLLIElement>('li[data-is-dot]')
+        .forEach(
+          el => (el.style.display = this._showHiddenFiles ? 'flex' : 'none')
+        );
+      this.toolbar.addItem('toggleHiddenFile', toggleHiddenFile);
+    }
 
     this.listing = this.createDirListing({
       model,
@@ -426,7 +438,7 @@ export class FileBrowser extends Widget {
   private _navigateToCurrentDirectory: boolean;
   private _showLastModifiedColumn: boolean = true;
   private _useFuzzyFilter: boolean = true;
-  private _showHiddenFiles: boolean = true;
+  private _showHiddenFiles: boolean = false;
 }
 
 /**
