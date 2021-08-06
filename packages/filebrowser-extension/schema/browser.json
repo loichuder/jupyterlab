@@ -26,6 +26,10 @@
           {
             "command": "filebrowser:toggle-main",
             "rank": 1
+          },
+          {
+            "command": "filebrowser:toggle-hidden-files",
+            "rank": 9.95
           }
         ]
       },

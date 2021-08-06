@@ -2,7 +2,6 @@
 // Distributed under the terms of the Modified BSD License.
 
 import { showErrorMessage } from '@jupyterlab/apputils';
-import { PageConfig } from '@jupyterlab/coreutils';
 import { IDocumentManager } from '@jupyterlab/docmanager';
 import { Contents, ServerConnection } from '@jupyterlab/services';
 import {
@@ -11,7 +10,6 @@ import {
   TranslationBundle
 } from '@jupyterlab/translation';
 import {
-  circleEmptyIcon,
   newFolderIcon,
   ReactWidget,
   refreshIcon,
@@ -103,20 +101,10 @@ export class FileBrowser extends Widget {
       },
       tooltip: this._trans.__('Refresh File List')
     });
-    const toggleHiddenFile = new ToolbarButton({
-      icon: circleEmptyIcon,
-      onClick: () => {
-        this.showHiddenFiles = !this.showHiddenFiles;
-      },
-      tooltip: this._trans.__('Toggle hidden files visibility')
-    });
 
     this.toolbar.addItem('newFolder', newFolder);
     this.toolbar.addItem('upload', uploader);
     this.toolbar.addItem('refresher', refresher);
-    if (PageConfig.getOption('allow_hidden_files') === 'true') {
-      this.toolbar.addItem('toggleHiddenFile', toggleHiddenFile);
-    }
 
     this.listing = this.createDirListing({
       model,

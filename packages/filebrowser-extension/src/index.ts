@@ -1044,6 +1044,7 @@ function addCommands(
   commands.addCommand(CommandIDs.toggleHiddenFiles, {
     label: trans.__('Show Hidden Files'),
     isToggled: () => browser.showHiddenFiles,
+    isEnabled: () => PageConfig.getOption('allow_hidden_files') === 'true',
     execute: () => {
       const value = !browser.showHiddenFiles;
       const key = 'showHiddenFiles';
