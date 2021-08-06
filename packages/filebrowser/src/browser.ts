@@ -106,7 +106,7 @@ export class FileBrowser extends Widget {
     const toggleHiddenFile = new ToolbarButton({
       icon: circleEmptyIcon,
       onClick: () => {
-        model.toggleHiddenFileVisibility();
+        this.showHiddenFiles = !this.showHiddenFiles;
       },
       tooltip: this._trans.__('Toggle hidden files visibility')
     });
@@ -209,6 +209,18 @@ export class FileBrowser extends Widget {
     this.layout.addWidget(this._filenameSearcher);
     this.layout.addWidget(this.crumbs);
     this.layout.addWidget(this.listing);
+  }
+
+  /**
+   * Whether to show hidden files
+   */
+  get showHiddenFiles(): boolean {
+    return this._showHiddenFiles;
+  }
+
+  set showHiddenFiles(value: boolean) {
+    this.model.showHiddenFiles(value);
+    this._showHiddenFiles = value;
   }
 
   /**
@@ -426,6 +438,7 @@ export class FileBrowser extends Widget {
   private _navigateToCurrentDirectory: boolean;
   private _showLastModifiedColumn: boolean = true;
   private _useFuzzyFilter: boolean = true;
+  private _showHiddenFiles: boolean = false;
 }
 
 /**

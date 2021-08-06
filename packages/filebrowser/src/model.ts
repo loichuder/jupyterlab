@@ -729,10 +729,10 @@ export class TogglableHiddenFileBrowserModel extends FileBrowserModel {
   }
 
   /**
-   * Toggle the inclusion of hidden files. Triggers a model refresh.
+   * Set the inclusion of hidden files. Triggers a model refresh.
    */
-  toggleHiddenFileVisibility(): void {
-    this._includeHiddenFiles = !this._includeHiddenFiles;
+  showHiddenFiles(value: boolean): void {
+    this._includeHiddenFiles = value;
     void this.refresh();
   }
 
